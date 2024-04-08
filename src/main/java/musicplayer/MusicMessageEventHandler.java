@@ -55,10 +55,12 @@ public class MusicMessageEventHandler extends ListenerAdapter {
             messageChannel.sendMessage("").setEmbeds(embedBuilder.build()).queue();
         }
         if (messageLine.startsWith("!play ") && messageLine.split(" ")[1] != null) {
+            audioManager.openAudioConnection(voiceChannel);
             playerManager.play(event.getGuild(), messageLine.split(" ")[1]);
         }
         if (messageLine.startsWith("!search ") && messageLine.split(" ")[1] != null) {
-            playerManager.play(event.getGuild(), "ytsearch:" + messageLine.substring(messageLine.indexOf("!search ")));
+            audioManager.openAudioConnection(voiceChannel);
+            playerManager.play(event.getGuild(), "ytsearch:" + messageLine.replace("!search ", ""));
         }
         if (messageLine.equals("!stop")) {
             audioManager.closeAudioConnection();
