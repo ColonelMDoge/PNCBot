@@ -57,12 +57,18 @@ public class PlayerManager {
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
                 if (audioPlaylist.isSearchResult()) {
                     trackScheduler.queue(audioPlaylist.getTracks().getFirst());
+                    if (!trackScheduler.getBlockingQueue().isEmpty()) {
+                        EmbedBuilder queuedSong = new EmbedBuilder();
+                        queuedSong.setDescription("**Queued Song:** " + audioPlaylist.getTracks().getFirst().getInfo().title);
+                        queuedSong.setColor(new Color(179,179,179));
+                        messageChannel.sendMessage("").setEmbeds(queuedSong.build()).queue();
+                    }
                     return;
                 }
                 for (AudioTrack audioTrack : audioPlaylist.getTracks()) {
                     trackScheduler.queue(audioTrack);
                 }
-                if (!trackScheduler.getBlockingQueue().isEmpty()) {
+                if (!trackScheduler.getBlockingQueue().isEmpty() && trackScheduler.getBlockingQueue().size()!= audioPlaylist.getTracks().size() - 1) {
                     EmbedBuilder queuedPlaylist = new EmbedBuilder();
                     queuedPlaylist.setDescription("**Queued Playlist:** " + audioPlaylist.getName());
                     queuedPlaylist.setColor(new Color(179,179,179));
