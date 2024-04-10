@@ -66,6 +66,7 @@ public class MusicMessageEventHandler extends ListenerAdapter {
             audioManager.closeAudioConnection();
             trackScheduler.getBlockingQueue().clear();
             trackScheduler.setRepeat(false);
+            trackScheduler.getAudioPlayer().setVolume(50);
             trackScheduler.getAudioPlayer().stopTrack();
         }
         if (messageLine.equals("!pause")) {
