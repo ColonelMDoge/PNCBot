@@ -18,19 +18,20 @@ public class MusicMessageEventHandler extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
-        if (!event.isFromGuild()) return;
-
         MessageChannel messageChannel = event.getChannel();
+        
+        if (!event.isFromGuild()) return;
+        if (event.getAuthor().isBot()) return;
+        if (!messageChannel.getName().equals(CHANNEL_NAME)) return;
+        
         String messageLine = event.getMessage().getContentRaw();
         VoiceChannel voiceChannel = event.getGuild().getVoiceChannelsByName(VOICE_CHANNEL_NAME,true).getFirst();
         AudioManager audioManager = voiceChannel.getGuild().getAudioManager();
         PlayerManager playerManager = PlayerManager.get(messageChannel);
-        TrackScheduler trackScheduler = PlayerManager.get(messageChannel).getGuildManager(event.getGuild()).getTrackScheduler();
+        TrackScheduler trackScheduler = playerManager.getGuildManager(event.getGuild()).getTrackScheduler();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(new Color(179,179,179));
 
-        if (event.getAuthor().isBot()) return;
-        if (!messageChannel.getName().equals(CHANNEL_NAME)) return;
         if (messageLine.equals("!help")) {
             embedBuilder.setTitle("PNCBot Music Player!");
             embedBuilder.setDescription("""
