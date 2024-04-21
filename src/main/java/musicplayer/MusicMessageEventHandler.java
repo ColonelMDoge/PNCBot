@@ -32,7 +32,7 @@ public class MusicMessageEventHandler extends ListenerAdapter {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(new Color(179,179,179));
 
-        if (messageLine.equals("!help")) {
+        if (messageLine.equals("!help music")) {
             embedBuilder.setTitle("PNCBot Music Player!");
             embedBuilder.setDescription("""
                 The PNCBot Music Player can play music from either Youtube or Soundcloud!
