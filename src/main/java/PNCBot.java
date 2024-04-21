@@ -1,4 +1,5 @@
 import musicplayer.MusicMessageEventHandler;
+import citationgenerator.CitationMessageEventHandler;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -13,7 +14,7 @@ public class PNCBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableCache(CacheFlag.ONLINE_STATUS)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES,GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new MusicMessageEventHandler())
+                .addEventListeners(new MusicMessageEventHandler(), new CitationMessageEventHandler())
                 .build();
     }
 }
