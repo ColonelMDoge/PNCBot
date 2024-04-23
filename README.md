@@ -6,5 +6,4 @@
 2. PNCBot Citation Generator: Able to mass cite multiple sources using either APA 7, MLA 9, or CMS 17.
    - The citation scraper was made possible with Bibify (https://bibify.org) and the Selenium API
 ## Future Functionalities:
-- ChatGPT Implementation: Allows the bot to access ChatGPT to perform tasks.
 
