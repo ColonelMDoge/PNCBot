@@ -54,12 +54,12 @@ public class CitationMessageEventHandler extends ListenerAdapter {
             CitationGenerator generator = new CitationGenerator(CitationGenerator.APA);
             sendCitationList(messageChannel, generator, sources);
         }
-        if (messageLine.contains("!citeMLA\n") && messageLine.split(" ")[1] != null) {
+        if (messageLine.contains("!citeMLA\n") && messageLine.split("\n")[1] != null) {
             String[] sources = formatSourcesIntoArray(messageLine, "!citeMLA");
             CitationGenerator generator = new CitationGenerator(CitationGenerator.MLA);
             sendCitationList(messageChannel, generator, sources);
         }
-        if (messageLine.contains("!citeCMS\n") && messageLine.split(" ")[1] != null) {
+        if (messageLine.contains("!citeCMS\n") && messageLine.split("\n")[1] != null) {
             String[] sources = formatSourcesIntoArray(messageLine, "!citeCMS");
             CitationGenerator generator = new CitationGenerator(CitationGenerator.CMS);
             sendCitationList(messageChannel, generator, sources);
