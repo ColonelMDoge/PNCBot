@@ -19,11 +19,11 @@ public class MusicMessageEventHandler extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
         MessageChannel messageChannel = event.getChannel();
-        
+
         if (!event.isFromGuild()) return;
         if (event.getAuthor().isBot()) return;
         if (!messageChannel.getName().equals(CHANNEL_NAME)) return;
-        
+
         String messageLine = event.getMessage().getContentRaw();
         VoiceChannel voiceChannel = event.getGuild().getVoiceChannelsByName(VOICE_CHANNEL_NAME,true).getFirst();
         AudioManager audioManager = voiceChannel.getGuild().getAudioManager();
@@ -103,12 +103,12 @@ public class MusicMessageEventHandler extends ListenerAdapter {
             embedBuilder.setDescription("Timestamp set to: " + (timeInMillis / 60000) + ":" + (timeInMillis % 60000 / 1000) + (timeInMillis % 60000 / 1000 > 10 ? "" : "0"));
             messageChannel.sendMessage("").setEmbeds(embedBuilder.build()).queue();
         }
-        if (messageLine.equals("!skip")) { trackScheduler.getAudioPlayer().stopCurrentTrack(); }
+        if (messageLine.equals("!skip")) { trackScheduler.getAudioPlayer().stopTrack(); }
         if (messageLine.startsWith("!skip ") && messageLine.split(" ")[1] != null) {
             for (int i = 0; i < Integer.parseInt(messageLine.split(" ")[1]) - 1; i++) {
                 trackScheduler.getBlockingQueue().poll();
             }
-            trackScheduler.getAudioPlayer().stopCurrentTrack();
+            trackScheduler.getAudioPlayer().stopTrack();
         }
     }
 }
