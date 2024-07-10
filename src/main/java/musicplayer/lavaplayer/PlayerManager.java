@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -22,7 +23,8 @@ public class PlayerManager {
     private final Map<Long, GuildManager> guildManagerMap = new HashMap<>();
 
     private PlayerManager(MessageChannel messageChannel) {
-        AudioSourceManagers.registerLocalSource(audioPlayerManager);
+        YoutubeAudioSourceManager youtubeAudioSourceManager = new dev.lavalink.youtube.YoutubeAudioSourceManager();
+        audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
         AudioSourceManagers.registerRemoteSources(audioPlayerManager);
         this.messageChannel = messageChannel;
     }
