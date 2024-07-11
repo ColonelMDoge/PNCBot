@@ -40,7 +40,7 @@ public class MusicMessageEventHandler extends ListenerAdapter {
 
                 Here are the list of the commands this bot can do:""");
             embedBuilder.addField("Commands:", """
-                ``!help`` - Opens this message again.
+                ``!help music`` - Opens this message again.
                 ``!play URL`` - Plays a song with the provided URL.
                 ``!search ...`` - Searches for a YouTube song and plays the first occurrence.
                 ``!pause`` - Pauses the current playing song.
