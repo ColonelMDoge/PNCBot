@@ -42,6 +42,7 @@ public class CitationMessageEventHandler extends ListenerAdapter {
                                   
                 Here are the list of the commands this bot can do:""");
             embedBuilder.addField("Commands:", """
+                ``!help citation`` - Opens this message again.
                 ``!citeAPA`` - Cites using the American Psychological Association 7th Edition.
                 ``!citeMLA`` - Cites using the Modern Language Association 9th Edition.
                 ``!citeCMS`` - Cites using the Chicago Manual Style 17th Edition.
