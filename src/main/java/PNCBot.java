@@ -14,7 +14,7 @@ public class PNCBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableCache(CacheFlag.ONLINE_STATUS)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES,GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new MusicMessageEventHandler(), new CitationMessageEventHandler())
+                .addEventListeners(new MusicMessageEventHandler(), new CitationMessageEventHandler(), new GroqMessageEventHandler())
                 .build();
     }
 }
