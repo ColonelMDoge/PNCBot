@@ -18,7 +18,7 @@ public class MusicMessageEventHandler extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
-        MessageChannel messageChannel = event.getChannel();
+        MessageChannel messageChannel = event.getGuildChannel();
 
         if (!event.isFromGuild()) return;
         if (event.getAuthor().isBot()) return;
@@ -27,8 +27,8 @@ public class MusicMessageEventHandler extends ListenerAdapter {
         String messageLine = event.getMessage().getContentRaw();
         VoiceChannel voiceChannel = event.getGuild().getVoiceChannelsByName(VOICE_CHANNEL_NAME,true).getFirst();
         AudioManager audioManager = voiceChannel.getGuild().getAudioManager();
-        PlayerManager playerManager = PlayerManager.get(messageChannel);
-        TrackScheduler trackScheduler = playerManager.getGuildManager(event.getGuild()).getTrackScheduler();
+        PlayerManager playerManager = PlayerManager.get();
+        TrackScheduler trackScheduler = playerManager.getGuildManager(event.getGuild(), messageChannel).getTrackScheduler();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(new Color(179,179,179));
 
@@ -57,11 +57,11 @@ public class MusicMessageEventHandler extends ListenerAdapter {
         }
         if (messageLine.startsWith("!play ") && messageLine.split(" ")[1] != null) {
             audioManager.openAudioConnection(voiceChannel);
-            playerManager.play(event.getGuild(), messageLine.split(" ")[1]);
+            playerManager.play(event.getGuild(), messageChannel, messageLine.split(" ")[1]);
         }
         if (messageLine.startsWith("!search ") && messageLine.split(" ")[1] != null) {
             audioManager.openAudioConnection(voiceChannel);
-            playerManager.play(event.getGuild(), "ytsearch:" + messageLine.replace("!search ", ""));
+            playerManager.play(event.getGuild(), messageChannel,"ytsearch:" + messageLine.replace("!search ", ""));
         }
         if (messageLine.equals("!stop")) {
             audioManager.closeAudioConnection();

@@ -19,30 +19,28 @@ import java.util.Map;
 public class PlayerManager {
     private final AudioPlayerManager audioPlayerManager = new DefaultAudioPlayerManager();
     private static PlayerManager playerManager;
-    private final MessageChannel messageChannel;
     private final Map<Long, GuildManager> guildManagerMap = new HashMap<>();
 
-    private PlayerManager(MessageChannel messageChannel) {
+    private PlayerManager() {
         YoutubeAudioSourceManager youtubeAudioSourceManager = new dev.lavalink.youtube.YoutubeAudioSourceManager();
         audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
         AudioSourceManagers.registerRemoteSources(audioPlayerManager);
-        this.messageChannel = messageChannel;
     }
-    public static PlayerManager get(MessageChannel messageChannel) {
+    public static PlayerManager get() {
         if (playerManager == null) {
-            playerManager = new PlayerManager(messageChannel);
+            playerManager = new PlayerManager();
         }
         return playerManager;
     }
-    public GuildManager getGuildManager(Guild guild) {
+    public GuildManager getGuildManager(Guild guild, MessageChannel messageChannel) {
         return guildManagerMap.computeIfAbsent(guild.getIdLong(), (guildID) -> {
             GuildManager guildManager = new GuildManager(audioPlayerManager, messageChannel);
             guild.getAudioManager().setSendingHandler(guildManager.getAudioForwarder());
             return guildManager;
         });
     }
-    public void play(Guild guild, String track) {
-        GuildManager guildManager = getGuildManager(guild);
+    public void play(Guild guild, MessageChannel messageChannel, String track) {
+        GuildManager guildManager = getGuildManager(guild, messageChannel);
         TrackScheduler trackScheduler = guildManager.getTrackScheduler();
         audioPlayerManager.loadItemOrdered(guildManager, track, new AudioLoadResultHandler() {
             @Override
