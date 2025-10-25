@@ -4,18 +4,16 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.*;
 
 public class GroqMessageEventHandler extends ListenerAdapter {
     final String CHANNEL_NAME = "bot-channel";
-    final String MODEL_NAME = "llama3-8b-8192";
+    final String MODEL_NAME = "llama-3.3-70b-versatile";
     final String API_KEY = System.getenv("API_KEY");
 
     @Override
@@ -54,7 +52,14 @@ public class GroqMessageEventHandler extends ListenerAdapter {
                 httpURLConnection.setRequestProperty("Authorization", "Bearer " + API_KEY);
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
 
-                String jsonBody = "{\"model\": \"" + MODEL_NAME + "\", \"messages\": [{\"role\": \"user\", \"content\": \"" + question + "\"},{\"role\": \"system\", \"content\": \"You are the PNCBot, the autonomous bot that monitors the actions of PNC Logistics to make sure all tasks perform smoothly. You do not explicitly state your purpose all the time.Your timezone is in Eastern Standard Time.\"}]}";
+                String jsonBody = "{\"model\": \"" + MODEL_NAME + "\", " +
+                        "\"messages\": [{\"role\": " +
+                        "\"user\", " +
+                        "\"content\": \"" + question + "\"},{\"role\": \"system\", " +
+                        "\"content\": \"You are the PNCBot, the autonomous bot that monitors " +
+                        "the actions of PNC Logistics to make sure all tasks perform smoothly. " +
+                        "You do not explicitly state your purpose all the time.\"}]}";
+
                 httpURLConnection.setDoOutput(true);
                 OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
                 writer.write(jsonBody);
@@ -72,7 +77,14 @@ public class GroqMessageEventHandler extends ListenerAdapter {
                 String start = "\"role\":\"assistant\",\"content\":\"";
                 String end = "\"},\"logprobs\":null,\"finish_reason\":\"stop\"}";
                 String parsedOutput = output.substring(output.indexOf(start) + start.length(), output.indexOf(end)).replace("\\n", System.lineSeparator());
-                messageChannel.sendMessage(parsedOutput).queue();
+                if (parsedOutput.length() >= 2000)  {
+                    messageChannel.sendMessage("Looks like my output exceeds Discord's 2000 character limit. Sending as a file...").queue();
+                    messageChannel.sendMessage("Here is your file:")
+                            .addFiles(FileUpload.fromData(new ByteArrayInputStream(parsedOutput.getBytes()), "message.txt"))
+                            .queue();
+                } else {
+                    messageChannel.sendMessage(parsedOutput).queue();
+                }
             } catch (URISyntaxException | IOException e) {
                 messageChannel.sendMessage("Looks like I broke somewhere! Please retype your request in a different way!").queue();
                 throw new RuntimeException(e);
