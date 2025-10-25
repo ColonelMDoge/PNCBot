@@ -14,7 +14,7 @@ import java.net.*;
 public class GroqMessageEventHandler extends ListenerAdapter {
     final String CHANNEL_NAME = "bot-channel";
     final String MODEL_NAME = "llama-3.3-70b-versatile";
-    final String API_KEY = System.getenv("API_KEY");
+    final String API_KEY = System.getenv("GROQ_API_KEY");
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {

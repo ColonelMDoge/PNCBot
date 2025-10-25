@@ -1,5 +1,6 @@
 import musicplayer.MusicMessageEventHandler;
 import citationgenerator.CitationMessageEventHandler;
+import groqbot.GroqMessageEventHandler;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -8,7 +9,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 public class PNCBot {
     public static void main(String[] args) {
-        final String TOKEN = System.getenv("TOKEN");
+        final String TOKEN = System.getenv("JDA_TOKEN");
         JDABuilder jdaBuilder = JDABuilder.createDefault(TOKEN);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
